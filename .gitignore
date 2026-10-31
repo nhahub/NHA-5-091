@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Data: never commit datasets, lockbox, oracle, or raw outputs
+data/raw/
+data/lockbox/
+data/oracle/
+data/**/*.csv
+data/**/*.parquet
+runs/
+ledgers/
+
+# Notebooks and local artifacts
+.ipynb_checkpoints/
+*.log
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
