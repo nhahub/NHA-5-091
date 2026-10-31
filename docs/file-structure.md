@@ -15,7 +15,7 @@ is maintained.
 ├─ configs/
 │  ├─ llm.yaml                 # pinned backbone, temperature
 │  ├─ budgets.yaml             # iterations, wall time, tokens
-│  ├─ gate-thresholds.yaml     # frozen after the pilot
+│  ├─ gate-thresholds.yaml     # fixed after the pilot
 │  ├─ contracts/               # example goal contracts
 │  └─ matrix/                  # run matrix definitions
 ├─ data/
@@ -52,7 +52,7 @@ is maintained.
 │  ├─ baselines/               # C0, C1, C0g
 │  ├─ runner/
 │  └─ cli/
-├─ apps/dashboard/             # post-freeze, read-only over the ledger
+├─ apps/dashboard/             # post-evaluation, read-only over the ledger
 ├─ tests/
 │  ├─ unit/
 │  ├─ integration/
@@ -69,9 +69,9 @@ is maintained.
 ## Rules
 
 - One package per component. Shared schemas live only in `contracts/`.
-- `apps/dashboard/` stays outside `src/amlab/` so it cannot affect the frozen
-  evaluated system.
-- `configs/gate-thresholds.yaml` is frozen before the main evaluation.
+- `apps/dashboard/` stays outside `src/amlab/` so it cannot affect the fixed
+  evaluation version.
+- `configs/gate-thresholds.yaml` is fixed before the main evaluation.
 - Tests mirror the source layout.
 
 ## Ownership

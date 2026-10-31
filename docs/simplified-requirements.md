@@ -67,7 +67,7 @@ evaluated configurations.
 7. C5, last
 
 **Never cut:** harness isolation, the oracle, the C2/C3/C4 comparison, the
-system freeze, and the written analysis plan.
+fixed evaluation version, and the written analysis plan.
 
 ## Deadlines
 
@@ -75,6 +75,6 @@ system freeze, and the written analysis plan.
 | --- | --- |
 | System analysis and design | 6 Nov 2026 |
 | Guarded C3 vertical slice | 13 Nov 2026 |
-| System freeze (`v1.0-eval`) | 20 Nov 2026 |
+| Evaluation version fixed (commit hash recorded) | 20 Nov 2026 |
 | Implementation submitted | 30 Nov 2026 |
 | Final presentation, testing, reports | 4 Dec 2026 |

@@ -91,11 +91,11 @@ A **Fail** is proof by construction or by mechanism. A **Suspect** is statistica
 | G3 | Permuted-label control: score must stay in a calibrated chance band. In C2 and C5 it is an oracle-side audit that measures procedural leakage in the agent's own script | Fail above the band |
 | G4 | Shortcut screen: per-feature strength, exact mappings, importance concentration, columns declared unavailable at prediction time, Critic reading of column names | Suspect (Fail only for declared-unavailable columns) |
 | G5 | Temporal: forward-chaining splits when a time column is declared; no training timestamp later than a validation one | Fail if declared, otherwise warning |
-| G6 | Lockbox gap between selection CV and the one-shot lockbox score | Suspect or Fail by frozen thresholds |
+| G6 | Lockbox gap between selection CV and the one-shot lockbox score | Suspect or Fail by fixed thresholds |
 | G7 | Reproducibility: re-run with the same seed, code hash and pinned environment | Suspect |
 | G8 | Time, memory, inference latency, library and model-complexity constraints | Fail |
 
-Thresholds (chance band, lockbox gap, tolerance δ) are calibrated on development instances and frozen before the main evaluation. The permuted-label control is not a universal leak detector: it is blind to semantic proxies and label-free leakage.
+Thresholds (chance band, lockbox gap, tolerance δ) are calibrated on development instances and fixed before the main evaluation. The permuted-label control is not a universal leak detector: it is blind to semantic proxies and label-free leakage.
 
 ### 1.8 Validity verdict
 
@@ -173,7 +173,7 @@ There are two hidden sets: the system **lockbox** (what a real deployment could 
 - Configurations are interleaved in time to reduce API drift.
 - Infrastructure crashes are rerun once under a predefined rule; genuine agent failures count as outcomes.
 - Analysis is per instance (bootstrap over instances) with paired comparisons. Three seeds on one instance are not independent datasets.
-- Prompts and thresholds are tuned on development instances only, then frozen. The hypotheses and analysis plan are written before the main runs.
+- Prompts and thresholds are tuned on development instances only, then fixed. The hypotheses and analysis plan are written before the main runs.
 - With 12 instances only large effects are distinguishable, so we report intervals, not p-values.
 
 ### 1.12 Scope
@@ -204,7 +204,7 @@ There are two hidden sets: the system **lockbox** (what a real deployment could 
 - A small tabular slice of MLE-bench Lite and a CrewAI side comparison
 - Regression support
 
-Stretch features are built outside the frozen `v1.0-eval` system and are never switched on in the evaluated configurations, so they cannot confound the C2 to C5 comparison. They start only after the core loop, the gates and the demo dashboard work.
+Stretch features are built outside the evaluated system and are never switched on in the evaluated configurations, so they cannot confound the C2 to C5 comparison. They start only after the core loop, the gates and the demo dashboard work.
 
 What the results can claim: a relative comparison of guard designs on this benchmark, backbone and task type; per-fault catch and miss rates; the cost of guarding; and whether the Critic added value beyond the harness here. They cannot claim that the harness guarantees validity, that results transfer to other backbones or real-world faults, that multi-agent systems are better in general, or accuracy superiority over AutoML.
 
@@ -218,14 +218,14 @@ Pick an instance with an injected post-event proxy. Run C2: it accepts a model c
 
 ## 2. Project Plan
 
-The plan follows the official DEPI milestones: design by 6 Nov 2026, implementation by 30 Nov 2026, final presentation, testing and reports by 4 Dec 2026. The system is **frozen on 20 Nov** (tag `v1.0-eval`); after that only behavior-preserving bug fixes are allowed.
+The plan follows the official DEPI milestones: design by 6 Nov 2026, implementation by 30 Nov 2026, final presentation, testing and reports by 4 Dec 2026. The evaluation version is **fixed on 20 Nov** (commit hash recorded); after that only behavior-preserving bug fixes are allowed.
 
 | Phase | Dates | Goals | Deliverables |
 | --- | --- | --- | --- |
 | 1. Scoping and design | 30 Oct – 6 Nov | Architecture, threat model, gate and verdict rules, experiment schemas, evaluation protocol, draft pre-registration. Dataset shortlist and injector specs. Repository, CI, stub LangGraph, sandbox spike, split manager and auditor v0, baselines | Design document (due 6 Nov), repository with CI, baseline results |
 | 2. Core infrastructure | 7 – 13 Nov | Split manager, auditor v1, sandbox and evaluation harness, gates G1, G2, G4, gatekeeper, injectors F1 and F2, basic Experimenter, free-form submission contract. Measure cost per run | End-to-end guarded (C3) run on one clean and one F1 dataset by 13 Nov; decision on 2 or 3 seeds |
-| 3. Agents and guards | 14 – 20 Nov | Critic and verification menu (C4, C5), G0, G3, G5–G7, F3 injector, hard negatives, manifest sanity tests. Pilot on development instances, calibrate thresholds, finalize prompts and analysis plan | Frozen `v1.0-eval` on 20 Nov |
-| 4. Main experiments | 21 – 27 Nov | Run the matrix and references, log cost and time, manual audit of about 30 runs, investigate infrastructure failures, start analysis scripts and the demo script; build the read-only web dashboard over the ledger (outside the frozen evaluated system) | Raw results and ledgers; implementation submitted 30 Nov |
+| 3. Agents and guards | 14 – 20 Nov | Critic and verification menu (C4, C5), G0, G3, G5–G7, F3 injector, hard negatives, manifest sanity tests. Pilot on development instances, calibrate thresholds, finalize prompts and analysis plan | Evaluation version fixed on 20 Nov |
+| 4. Main experiments | 21 – 27 Nov | Run the matrix and references, log cost and time, manual audit of about 30 runs, investigate infrastructure failures, start analysis scripts and the demo script; build the read-only web dashboard over the ledger (outside the evaluated system) | Raw results and ledgers; implementation submitted 30 Nov |
 | 5. Analysis and delivery | 28 Nov – 4 Dec | Finish or rerun missing runs, statistics, report, demo rehearsal, slides | Final report, presentation and demo (4 Dec) |
 
 **Resources**
@@ -236,7 +236,7 @@ The plan follows the official DEPI milestones: design by 6 Nov 2026, implementat
 - Software: GitHub, Docker, LangGraph, LangSmith (free tier), AutoGluon, MLflow.
 - Data: public datasets only, no private or personal data.
 
-**What to cut first if the team falls behind, in order:** (1) C6, (2) seeds from 3 to 2, (3) the temporal variant, (4) one evaluation dataset, (5) the Critic's menu reduced to two experiments, (6) the dashboard reduced to the CLI scorecard plus a recorded replay, (7) C5 last. **Never cut:** harness isolation, the oracle, the C2/C3/C4 comparison, the system freeze, the written analysis plan.
+**What to cut first if the team falls behind, in order:** (1) C6, (2) seeds from 3 to 2, (3) the temporal variant, (4) one evaluation dataset, (5) the Critic's menu reduced to two experiments, (6) the dashboard reduced to the CLI scorecard plus a recorded replay, (7) C5 last. **Never cut:** harness isolation, the oracle, the C2/C3/C4 comparison, the fixed evaluation version, the written analysis plan.
 
 ## 3. Task Assignment and Roles
 
@@ -244,7 +244,7 @@ Roles are placeholders (Member 1 to Member 5) until the team decides who takes w
 
 | Workstream | Lead / backup | Ownership | Deliverables |
 | --- | --- | --- | --- |
-| A. Agents | Member 1 / Member 5 | LangGraph orchestration, Experimenter, Critic, prompts, output schemas, budgets, LangSmith; after the freeze, the demo web dashboard | Working bounded agent workflow with structured experiment specs |
+| A. Agents | Member 1 / Member 5 | LangGraph orchestration, Experimenter, Critic, prompts, output schemas, budgets, LangSmith; after the main runs, the demo web dashboard | Working bounded agent workflow with structured experiment specs |
 | B. Sandbox and evaluation infrastructure | Member 2 / Member 3 | Sandbox, fold-isolated execution and IPC protocol, evaluation harness, G0 and G7, scripted tampering attack suite | Isolated evaluation service, security and integrity tests |
 | C. Deterministic validity system | Member 3 / Member 2 | Split manager, data auditor, gates G1–G6, gatekeeper, verdict logic, verification runner, threshold calibration | Gate implementation, audit report, validity scorecard |
 | D. Benchmark and fault injection | Member 4 / Member 3 | Datasets, injectors, oracle sets, hidden manifests, hard negatives, permuted-label audit, manual-audit coordination | Development and evaluation datasets, injection pipeline, benchmark documentation |
@@ -264,12 +264,12 @@ Likelihood and impact are rated Low, Medium or High.
 | ID | Risk | L / I | Mitigation |
 | --- | --- | --- | --- |
 | R1 | LLM API cost or run time exceeds budget | High / High | Pilot in week 2, token caps per run, response caching in development, fall back to 2 seeds (96 runs) |
-| R2 | Scope creep from stretch features (RAG, routing, approval gates) | High / High | Written stretch list, started only after the core and the demo dashboard work and kept outside the frozen evaluated system; mentor check at each phase end |
+| R2 | Scope creep from stretch features (RAG, routing, approval gates) | High / High | Written stretch list, started only after the core and the demo dashboard work and kept outside the evaluated system; mentor check at each phase end |
 | R3 | Fold-isolated sandbox takes too long to build | Medium / High | Prototype in week 1, thin end-to-end version by 13 Nov, helper templates |
 | R4 | Experimenter cannot write valid pipelines under the constrained interface | Medium / High | Provide helper templates, measure the failure rate, count genuine agent failures as outcomes |
 | R5 | Fault injection or oracle errors | Medium / High | Sanity test for each fault, two-reviewer manual audit of about 30 runs, injectors built by a separate member |
 | R6 | Benchmark too easy or too obvious | Medium / Medium | Randomized names, positions and fidelity, hard negatives, C0g check (over 90% catch means redesign) |
-| R7 | Adaptive overfitting by the team to evaluation data | Medium / High | Development and evaluation split, system freeze on 20 Nov, written analysis plan |
+| R7 | Adaptive overfitting by the team to evaluation data | Medium / High | Development and evaluation split, evaluation version fixed on 20 Nov, written analysis plan |
 | R8 | Critic adds no measurable value | High / Low | Frame questions as open; report a null result as a finding |
 | R9 | Weak statistical power (12 instances) | High / Medium | Report intervals, analyze per instance, restrict claims |
 | R10 | LLM nondeterminism and API drift | High / Medium | Log prompts, model versions and seeds, interleave configurations, replay mode for the demo |
@@ -277,8 +277,8 @@ Likelihood and impact are rated Low, Medium or High.
 | R12 | Third-party library or service changes, outages | Medium / Medium | Pin dependency versions, abstraction layer over the LLM provider |
 | R13 | Exam periods and team availability | High / Medium | Lighter loads around exams, critical-path items first, named backup per workstream |
 | R14 | Privacy and sensitive data | Low / Medium | Public datasets only; document privacy considerations, including Egypt's data protection law, for real-world use |
-| R15 | Compressed five-week schedule | High / High | Fixed cut order (section 2), parallel workstreams, feature freeze on 20 Nov |
-| R16 | Demo dashboard takes time from the core | Medium / Medium | Keep it read-only over the ledger with a few pages, built by a post-freeze owner, with the CLI scorecard and recorded replay as fallback |
+| R15 | Compressed five-week schedule | High / High | Fixed cut order (section 2), parallel workstreams, scope fixed on 20 Nov |
+| R16 | Demo dashboard takes time from the core | Medium / Medium | Keep it read-only over the ledger with a few pages, built by an owner after the main runs, with the CLI scorecard and recorded replay as fallback |
 
 ## 5. KPIs
 
@@ -318,7 +318,7 @@ The results are research findings, so the main KPIs report measured rates with u
 **Project management**
 
 - Milestones delivered on time: design 6 Nov, implementation 30 Nov, final presentation 4 Dec 2026.
-- System frozen and tagged `v1.0-eval` on 20 Nov.
+- Evaluation version fixed on 20 Nov, with the commit hash in the ledger.
 - Matrix completion: 144 of 144 planned runs (or 96 of 96 under the fallback), with every missing run explained.
 - Mentor review held at the end of every phase. Demo dashboard showing a recorded C2 versus C4 replay by 1 Dec.
 
@@ -338,4 +338,4 @@ The results are research findings, so the main KPIs report measured rates with u
 | Hidden holdout as the merge gate | Hidden lockbox read once, plus a separate oracle set known only to the benchmark designers |
 | Critic assumed useful | Critic is an experimental factor, with a null result accepted |
 | Mixed LLM and tool roles | Two LLM agents only; all else deterministic, with a fixed authority order |
-| Targets fixed in advance | Targets calibrated after the pilot; system frozen on 20 Nov |
+| Targets fixed in advance | Targets calibrated after the pilot; evaluation version fixed on 20 Nov |

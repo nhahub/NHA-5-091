@@ -15,7 +15,7 @@ chore/<slug>          chore/ci-cache
 
 Areas: `agents`, `harness`, `validity`, `benchmark`, `eval`, `infra`, `docs`.
 
-Rebase on `main` daily. Squash merge, then delete the branch.
+Rebase on `main` daily. Merge with **rebase and merge**, then delete the branch.
 
 ## Commits
 
@@ -24,16 +24,27 @@ Conventional Commits with the area as scope:
 ```
 feat(validity): add G2 duplicate check
 fix(sandbox): block network access
-docs(plan): freeze analysis plan
+docs(plan): finalize analysis plan
 test(benchmark): add injector sanity test
 ```
 
+Commit messages become history, so keep every commit meaningful.
+
 ## Pull requests
 
-- One issue per PR, target under ~400 changed lines.
+- One issue per PR, under ~400 changed lines.
 - Open a draft PR early.
-- PR title becomes the squash commit message.
-- Fill in the PR checklist: tests, no secrets, no data files, docs updated.
+- Fill in the checklist: tests, no secrets, no data files, docs updated.
+
+## Merging
+
+- Default: **rebase and merge**; PR titles are plain English and each commit
+  stays in history.
+- If you squash, the PR title must follow the commit format:
+  `feat(validity): add G2 duplicate gate`.
+- Merge commits are disabled. Remove `wip` and fixup commits before merging,
+  then delete the branch.
+- Repository settings: rebase as default, squash allowed, merge commits off.
 
 ## Reviews
 
@@ -53,21 +64,10 @@ never part of CI.
 
 Target: at least 80% unit-test coverage on the harness and gates.
 
-## Tags and freeze
-
-| Tag | Date | Meaning |
-| --- | --- | --- |
-| `v0.1-design` | 6 Nov 2026 | Design document, CI, baselines |
-| `v0.2-slice` | 13 Nov 2026 | Guarded C3 run on one clean and one F1 instance |
-| `v1.0-eval` | 20 Nov 2026 | **System freeze** |
-| `v1.1-submission` | 30 Nov 2026 | Implementation submitted |
-| `v1.2-final` | 4 Dec 2026 | Final report, presentation, demo |
-
-After `v1.0-eval`, only `fix/freeze/*` branches touching evaluated code are
-allowed. They must be behavior-preserving, need 2 approvals, and are recorded in
-`docs/project.md` or the release notes.
-
-## Data
+## Data and evaluation runs
 
 Never commit datasets, lockbox files, oracle files, API keys, or raw run
 outputs. Commit manifests and hashes only.
+
+Record the commit hash in the run config and every ledger entry. Do not change
+prompts, gates, thresholds, splits or sandbox during the main runs.

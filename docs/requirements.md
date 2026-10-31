@@ -66,7 +66,7 @@ Invalid or contradictory contracts are rejected before any run starts.
 | G3 | Permuted-label control within calibrated chance band | Fail above band |
 | G4 | Shortcut screen and declared-unavailable columns | Suspect; Fail only for declared-unavailable columns |
 | G5 | Temporal ordering when a time column is declared | Fail if declared, otherwise warning |
-| G6 | Lockbox gap against frozen thresholds | Suspect or Fail |
+| G6 | Lockbox gap against fixed thresholds | Suspect or Fail |
 | G7 | Reproducibility with same seed, code hash and environment | Suspect |
 | G8 | Time, memory, latency, library and complexity constraints | Fail |
 
@@ -98,8 +98,8 @@ replay, feature permutation.
 ### FR-11 Ledger
 
 - Append-only JSONL record per run.
-- Contains contract, experiment specs, code hashes, metrics, gate results,
-  Critic reviews, token cost, timestamps and model version.
+- Contains contract, experiment specs, code hash, commit hash, metrics, gate
+  results, Critic reviews, token cost, timestamps and model version.
 - Complete for 100% of runs.
 
 ### FR-12 Benchmark and oracle
