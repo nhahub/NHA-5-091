@@ -244,11 +244,11 @@ Roles are placeholders (Member 1 to Member 5) until the team decides who takes w
 
 | Workstream | Lead / backup | Ownership | Deliverables |
 | --- | --- | --- | --- |
-| A. Agents | Member 1 / Member 5 | LangGraph orchestration, Experimenter, Critic, prompts, output schemas, budgets, LangSmith; after the main runs, the demo web dashboard | Working bounded agent workflow with structured experiment specs |
-| B. Sandbox and evaluation infrastructure | Member 2 / Member 3 | Sandbox, fold-isolated execution and IPC protocol, evaluation harness, G0 and G7, scripted tampering attack suite | Isolated evaluation service, security and integrity tests |
-| C. Deterministic validity system | Member 3 / Member 2 | Split manager, data auditor, gates G1–G6, gatekeeper, verdict logic, verification runner, threshold calibration | Gate implementation, audit report, validity scorecard |
-| D. Benchmark and fault injection | Member 4 / Member 3 | Datasets, injectors, oracle sets, hidden manifests, hard negatives, permuted-label audit, manual-audit coordination | Development and evaluation datasets, injection pipeline, benchmark documentation |
-| E. Baselines and research evaluation | Member 5 / Member 1 | C0, C1 and C0g baselines, matrix runner, cost and runtime logging, statistics, report generator, demo | Reproducible runner, results with intervals, final report and presentation |
+| A. Agents | abdelrahman / ahmed | LangGraph orchestration, Experimenter, Critic, prompts, output schemas, budgets, LangSmith; after the main runs, the demo web dashboard | Working bounded agent workflow with structured experiment specs |
+| B. Sandbox and evaluation infrastructure | seif / hazem | Sandbox, fold-isolated execution and IPC protocol, evaluation harness, G0 and G7, scripted tampering attack suite | Isolated evaluation service, security and integrity tests |
+| C. Deterministic validity system | menna / ahmed | Split manager, data auditor, gates G1–G6, gatekeeper, verdict logic, verification runner, threshold calibration | Gate implementation, audit report, validity scorecard |
+| D. Benchmark and fault injection | seif / abdelrahman| Datasets, injectors, oracle sets, hidden manifests, hard negatives, permuted-label audit, manual-audit coordination | Development and evaluation datasets, injection pipeline, benchmark documentation |
+| E. Baselines and research evaluation | hazem / menna | C0, C1 and C0g baselines, matrix runner, cost and runtime logging, statistics, report generator, demo | Reproducible runner, results with intervals, final report and presentation |
 
 **Shared responsibilities**
 
